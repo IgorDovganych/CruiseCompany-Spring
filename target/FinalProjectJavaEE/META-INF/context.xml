@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+    <Resource
+            name="jdbc/CruiseCompany"
+            auth="Container"
+            type="javax.sql.DataSource"
+            maxTotal="50"
+            minIdle="10"
+            maxWaitMillis="5000"
+            initialSize="10"
+            username="admin"
+            password="root"
+            driverClassName="com.mysql.jdbc.Driver"
+            url="jdbc:mysql://localhost:3306/mydb?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC"/>
+</Context>
