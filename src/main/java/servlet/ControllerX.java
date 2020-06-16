@@ -49,7 +49,6 @@ public class ControllerX {
     @RequestMapping(value = "/cruises", method = RequestMethod.GET)
     public String getAllCruises(HttpServletRequest request) throws DaoException {
         request.setAttribute("cruises", cruiseDao.getAllCruises());
-        System.out.println(cruiseDao.getCruiseById(1));
         return "cruises";
     }
 
@@ -177,7 +176,7 @@ public class ControllerX {
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String registrationPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public String registration(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String name = request.getParameter("name");
         String email = request.getParameter("email");
         String hashedPassword = PasswordHash.HashPasswordMD5(request.getParameter("password"));

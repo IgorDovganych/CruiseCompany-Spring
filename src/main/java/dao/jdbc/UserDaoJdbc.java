@@ -69,6 +69,8 @@ public class UserDaoJdbc implements UserDao {
         return user;
     }
 
+
+
     public static void main(String[] args) {
         System.out.println(new UserDaoJdbc().findUserByEmail("tanya@gmail.com"));
 

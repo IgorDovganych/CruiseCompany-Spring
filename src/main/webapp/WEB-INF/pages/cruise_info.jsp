@@ -27,7 +27,6 @@
     <c:when test="${noTicketsMessage!=null}">
         <p class="center red">
             <fmt:message key="noTicketsMessage"/>
-                ${noTicketsMessage}
         </p>
     </c:when>
     <c:otherwise>
@@ -88,6 +87,14 @@
                 <tr value="${excursion.price}">
                     <td><input type="checkbox" name="excursion" value="${excursion.id}"
                                onclick="getCruiseFinalPrice()"/>
+
+<%--                        <div class="cbx">--%>
+<%--                            <input id="cbx" type="checkbox"/>--%>
+<%--                            <label for="cbx"></label>--%>
+<%--                            <svg width="15" height="14" viewbox="0 0 15 14" fill="none">--%>
+<%--                                <path d="M2 8.36364L6.23077 12L13 2"></path>--%>
+<%--                            </svg>--%>
+<%--                        </div>--%>
 
                     </td>
                     <td>${excursion.portName}</td>
