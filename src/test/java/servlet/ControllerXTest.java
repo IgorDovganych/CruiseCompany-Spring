@@ -1,6 +1,12 @@
 package servlet;
 
+import dao.CruiseDao;
+import dao.ExcursionDao;
+import dao.TicketDao;
 import dao.UserDao;
+import exception.DaoException;
+import model.Cruise;
+import model.Ship;
 import model.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +20,9 @@ import util.PasswordHash;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,6 +32,8 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class ControllerXTest {
 
+   // static final User user = new User(1L, "YA", "email@gmail.com", "wrong password", "admin") ;
+
     @InjectMocks
     ControllerX controller;
 
@@ -31,6 +42,15 @@ public class ControllerXTest {
 
     @Mock
     UserDao userDao;
+
+    @Mock
+    CruiseDao cruiseDao;
+
+    @Mock
+    ExcursionDao excursionDao;
+
+    @Mock
+    TicketDao ticketDao;
 
     @Mock
     HttpSession session;
@@ -44,6 +64,9 @@ public class ControllerXTest {
 
     @Captor
     ArgumentCaptor<User> userArgumentCaptor;
+
+    @Captor
+    ArgumentCaptor<List<Cruise>> cruisesArgumentCaptor;
 
     @Test
     public void loginPage() {
@@ -80,13 +103,11 @@ public class ControllerXTest {
         when(userDao.findUserByEmail(email)).thenReturn(user);
         when(request.getSession()).thenReturn(session);
         String expectedReturn = "redirect:/user_account_info";
-
         //act
         String actualResult = controller.login(request);
 
         //assert
         assertEquals(expectedReturn,actualResult);
-
         verify(session).setAttribute(attributeNameCaptor.capture(), userArgumentCaptor.capture());
         assertEquals(user, userArgumentCaptor.getValue());
     }
@@ -139,8 +160,86 @@ public class ControllerXTest {
         String expectedReturn = "registration_page";
         //act
         String actual = controller.registrationPage(request);
+
+        //assert
         assertEquals(expectedReturn,actual);
+    }
 
 
+
+    @Test
+    public void getAllCruises() throws DaoException {
+        //setup
+        List<Cruise> cruises = new ArrayList<>();
+        Ship ship = new Ship(1,200,"Tanya");
+        List<String> route = Arrays.asList("Oslo","Skagen");
+        Cruise cruise = new Cruise(1,ship,route,new Date(),new Date(),200);
+        cruises.add(cruise);
+        when(cruiseDao.getAllCruises()).thenReturn(cruises);
+        String expectedAttributeName = "cruises";
+        String expectedReturn = "cruises";
+
+        //act
+        String actualResult = controller.getAllCruises(request);
+
+        //assert
+        verify(request).setAttribute(attributeNameCaptor.capture(), cruisesArgumentCaptor.capture());
+        assertEquals(expectedAttributeName,attributeNameCaptor.getValue());
+        assertEquals(cruises,cruisesArgumentCaptor.getValue());
+        assertEquals(expectedReturn,actualResult);
+    }
+
+    @Test
+    public void getCruiseInfoTest() throws DaoException {
+        int id = 1;
+        Ship ship = new Ship(1,200,"Tanya");
+        List<String> route = Arrays.asList("Oslo","Skagen");
+        Cruise cruise = new Cruise(1,ship,route,new Date(),new Date(),200);
+
+        when(request.getParameter("id")).thenReturn(String.valueOf(id));
+        when(cruiseDao.getCruiseById(id)).thenReturn(cruise);
+
+        //act
+        String actualResult = controller.getCruiseInfo(request);
+
+        //assert
+        assertEquals(cruise.getShip().getCapacity(),200);
+        assertEquals("cruise_info",actualResult);
+    }
+
+    @Test
+    public void getUserAccountInfoTest() throws DaoException {
+
+        //setup
+        User user = new User(1L, "YA", "email@gmail.com", "wrong password", "admin") ;
+        when(request.getSession()).thenReturn(session);
+        when(session.getAttribute("user")).thenReturn(user);
+        String expectedReturn = "user_account_info";
+
+        //act
+        String actualResult = controller.getUserAccountInfo(request);
+
+        //assert
+        assertEquals(1L,user.getId());
+        assertEquals(expectedReturn,actualResult);
+    }
+
+    @Test
+    public void changeLanguageLinkIsNotBlank() {
+        //setup
+        String lang = "en";
+        String parameters = "params";
+        String link = "main_page";
+        String expectedReturn = "redirect:main_page?params";
+        when(request.getParameter("link")).thenReturn(link);
+        when(request.getParameter("parameters")).thenReturn(parameters);
+        when(request.getParameter("lang")).thenReturn(lang);
+        when(request.getSession()).thenReturn(session);
+
+        //act
+        String actualResult = controller.changeLanguage(request);
+
+        //assert
+        assertEquals(expectedReturn,actualResult);
     }
 }

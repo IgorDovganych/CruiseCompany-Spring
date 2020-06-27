@@ -54,6 +54,7 @@ public class Cruise {
         this.price = price;
     }
 
+
     public int getPrice() {
         return price;
     }

@@ -51,6 +51,10 @@ public class CruiseDaoJdbc implements CruiseDao {
             " inner join ports on route_points.port_id=ports.id " +
             " where cruises.id=? order by ships.id, port_sequence_number asc";
 
+    final static String INSERT_INTO_ROUTE_POINTS ="INSERT INTO route_points(route_id, port_id,port_sequence_number) " +
+            "values(?,?,?)";
+    final static String GET_MAX_VALUE = "SELECT MAX(route_id) as max_value FROM route_points";
+
 
     final static String GET_ALL_SHIPS = "SELECT * FROM ships";
     final static String GET_ALL_PORTS = "SELECT * FROM ports";
@@ -243,5 +247,42 @@ public class CruiseDaoJdbc implements CruiseDao {
             LOGGER.warn(e);
             throw new DaoException("An exception occurred while getting ports", e);
         }
+    }
+
+    @Override
+    public int insertRoute(List<Integer> portIds) throws DaoException{
+        LOGGER.info("insertRoute method started");
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(INSERT_INTO_ROUTE_POINTS);
+             Statement statement = connection.createStatement()){
+            ResultSet rs = statement.executeQuery(GET_MAX_VALUE);
+            int routeId = 0;
+            while (rs.next()){
+                routeId = rs.getInt("max_value");
+            }
+            routeId++;
+
+            int sequence_num = 1;
+            for (int portId:portIds) {
+                ps.setInt(1,routeId);
+                ps.setInt(2,portId);
+                ps.setInt(3,sequence_num);
+                sequence_num++;
+                ps.addBatch();
+            }
+            int[] updateCounts = ps.executeBatch();
+            for (int i=0; i<updateCounts.length; i++) {
+                if (updateCounts[i] >= 0) {
+                    System.out.println("OK; updateCount=" + updateCounts[i]);
+                }
+            }
+            System.out.println(updateCounts);
+
+
+        }catch (SQLException e){
+            LOGGER.warn(e);
+            throw new DaoException("An exception occured while inserting into route_points");
+        }
+        return 0;
     }
 }

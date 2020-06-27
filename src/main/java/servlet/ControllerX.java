@@ -151,11 +151,8 @@ public class ControllerX {
     @RequestMapping(value = "/change_language", method = RequestMethod.GET)
     public String changeLanguage(HttpServletRequest request){
         String link = request.getParameter("link");
-        System.out.println("link = " +link);
-
         String redirectLink = "";
         if(link!=""){
-
 //            redirectLink = link.replace("/FinalProjectSpring", "redirect:");
              redirectLink = "redirect:" + link.replace("/FinalProjectSpring", "");
         }else {
@@ -193,5 +190,6 @@ public class ControllerX {
 
         return "redirect:/user_account_info";
     }
+
 
 }

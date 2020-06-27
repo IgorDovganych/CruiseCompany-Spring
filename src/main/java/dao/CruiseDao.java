@@ -6,6 +6,7 @@ import model.Port;
 import model.Ship;
 
 import java.sql.Array;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,4 +20,5 @@ public interface CruiseDao {
 
     List<Ship> getAllShips() throws DaoException;
     List<Port> getAllPorts() throws DaoException;
+    int insertRoute(List<Integer> portIds) throws DaoException;
 }

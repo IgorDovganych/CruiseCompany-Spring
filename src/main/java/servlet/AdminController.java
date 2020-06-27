@@ -11,7 +11,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import util.PasswordHash;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+
+import static java.lang.Integer.parseInt;
+import static java.util.stream.Collectors.toList;
 
 @Controller
 public class AdminController {
@@ -147,5 +154,34 @@ public class AdminController {
         return "redirect:/admin/excursions" ;
     }
 
+    @RequestMapping(value = "/admin/create_cruise_page",method = RequestMethod.GET)
+    public String createCruisePage(HttpServletRequest request) throws DaoException {
+        LOGGER.info("CreateCruisePageCommand started");
+        List<Ship> ships = cruiseDao.getAllShips();
+        request.setAttribute("ships",ships);
+        List<Port> ports = cruiseDao.getAllPorts();
+        request.setAttribute("ports",ports);
+        return "create_cruise";
+    }
+
+    @RequestMapping(value = "/admin/create_cruise",method = RequestMethod.POST)
+    public String createCruise(HttpServletRequest request) throws DaoException, ParseException {
+        int shipId = parseInt(request.getParameter("shipId"));
+        String portIdsString = request.getParameter("portIds");
+        Date startDate = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("startDate"));
+        Date endDate = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("endDate"));
+        int basePrice = parseInt(request.getParameter("basePrice"));
+        System.out.println("shipId = " + shipId);
+        System.out.println("portIdsString = " + portIdsString);
+        System.out.println("startDate = " + startDate);
+        System.out.println("endDate = " + endDate);
+        System.out.println("basePrice = " + basePrice);
+
+        List<Integer> portIds = Arrays.stream(request.getParameter("portIds").split(","))
+                .filter(s -> !s.isEmpty()).map(Integer::parseInt).collect(toList());
+        int result = cruiseDao.insertRoute(portIds);
+        System.out.println(result);
+        return "cruises";
+    }
 
 }
