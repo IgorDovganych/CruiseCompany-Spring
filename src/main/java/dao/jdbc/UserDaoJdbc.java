@@ -72,6 +72,19 @@ public class UserDaoJdbc implements UserDao {
     }
 
     @Override
+    public List<User> getAllUsersOnPage(int pageNum, int pageSize) {
+        LOGGER.info("method getAllUsers on page " + pageNum + " started");
+        Session session = this.sessionFactory.openSession();
+        SQLQuery query = session.createSQLQuery(SELECT_ALL_FROM_USERS);
+        query.setFirstResult(pageSize * (pageNum - 1));
+        query.setMaxResults(pageSize);
+        query.addEntity(User.class);
+        List<User> users = query.list();
+        session.close();
+        return users;
+    }
+
+    @Override
     public User updateUser(int id, String name, String email, String password, String role) {
         LOGGER.info("method updateUser started");
         Session session = sessionFactory.openSession();

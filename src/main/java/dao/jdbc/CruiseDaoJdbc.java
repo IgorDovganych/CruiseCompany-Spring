@@ -5,7 +5,6 @@ import exception.DaoException;
 import model.Port;
 import model.Cruise;
 import model.Ship;
-import model.User;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
@@ -39,7 +38,7 @@ public class CruiseDaoJdbc implements CruiseDao {
             "inner join ships on ship_id=ships.id\n" +
             "inner join route_points on cruises.route_id=route_points.route_id \n" +
             "inner join ports on route_points.port_id=ports.id\n" +
-            "Order by ships.id,port_sequence_number asc;";
+            "Order by cruises.id,port_sequence_number asc;";
 
     final static String GET_CRUISE_BY_ID = "SELECT * FROM cruises inner join ships on ship_id=ships.id " +
             "inner join route_points on cruises.route_id=route_points.route_id " +
@@ -53,7 +52,8 @@ public class CruiseDaoJdbc implements CruiseDao {
 
     final static String INSERT_INTO_ROUTE_POINTS ="INSERT INTO route_points(route_id, port_id,port_sequence_number) " +
             "values(?,?,?)";
-    final static String GET_MAX_VALUE = "SELECT MAX(route_id) as max_value FROM route_points";
+    final static String GET_MAX_VALUE_OF_ROUTE_ID = "SELECT MAX(route_id) as max_value FROM route_points";
+    final static String INSERT_CRUISE = "INSERT INTO cruises(route_id, ship_id,start_date, end_date, base_price) values(?,?,?,?,?)";
 
 
     final static String GET_ALL_SHIPS = "SELECT * FROM ships";
@@ -255,13 +255,13 @@ public class CruiseDaoJdbc implements CruiseDao {
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(INSERT_INTO_ROUTE_POINTS);
              Statement statement = connection.createStatement()){
-            ResultSet rs = statement.executeQuery(GET_MAX_VALUE);
+            ResultSet rs = statement.executeQuery(GET_MAX_VALUE_OF_ROUTE_ID);
             int routeId = 0;
             while (rs.next()){
                 routeId = rs.getInt("max_value");
             }
             routeId++;
-
+            connection.setAutoCommit(false);
             int sequence_num = 1;
             for (int portId:portIds) {
                 ps.setInt(1,routeId);
@@ -271,18 +271,39 @@ public class CruiseDaoJdbc implements CruiseDao {
                 ps.addBatch();
             }
             int[] updateCounts = ps.executeBatch();
+            connection.commit();
             for (int i=0; i<updateCounts.length; i++) {
                 if (updateCounts[i] >= 0) {
                     System.out.println("OK; updateCount=" + updateCounts[i]);
                 }
             }
             System.out.println(updateCounts);
+            return routeId;
 
 
         }catch (SQLException e){
             LOGGER.warn(e);
             throw new DaoException("An exception occured while inserting into route_points");
         }
-        return 0;
+    }
+
+    @Override
+    public void insertCruise(int route_id, int ship_id, Date startDate, Date endDate, int basePrice) throws DaoException {
+        LOGGER.info("insertCruise method started");
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(INSERT_CRUISE)){
+            ps.setInt(1,route_id);
+            ps.setInt(2,ship_id);
+            java.sql.Date sqlStartDate = new java.sql.Date(startDate.getTime());
+            ps.setDate(3, sqlStartDate);
+            java.sql.Date sqlEndDate = new java.sql.Date(endDate.getTime());
+            ps.setDate(4, sqlEndDate);
+            ps.setInt(5,basePrice);
+            ps.executeUpdate();
+
+        }catch(SQLException e){
+            LOGGER.warn(e);
+            throw new DaoException("An exception while inserting cruise into cruise table");
+        }
     }
 }

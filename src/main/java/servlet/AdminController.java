@@ -1,9 +1,11 @@
 package servlet;
 
 import dao.*;
+import dao.jdbc.TransactionManager;
 import exception.DaoException;
 import model.*;
 import org.apache.log4j.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,9 +41,27 @@ public class AdminController {
     @Autowired
     PortDao portDao;
 
+    @Autowired
+    TransactionManager transactionManager;
+
     @RequestMapping(value = "/admin/users", method = RequestMethod.GET)
     public String getAllUsers(HttpServletRequest request) {
-        request.setAttribute("users", userDao.getAllUsers());
+        int pageNum = 1;
+        if(request.getParameter("page") == null){
+            request.getSession().setAttribute("page", "1");
+
+        }else {
+            request.getSession().setAttribute("page",request.getParameter("page"));
+            pageNum = Integer.parseInt(request.getParameter("page"));
+        }
+
+        int pageSize = 10;
+        int numOfUsers = userDao.getAllUsers().size();
+        int numOfPages = numOfUsers/pageSize;
+        List<User> users = userDao.getAllUsersOnPage(pageNum,pageSize);
+        request.setAttribute("users", users);
+        request.setAttribute("numOfUsers", numOfUsers);
+        request.setAttribute("numOfPages", numOfPages);
         return "users";
     }
 
@@ -179,9 +199,11 @@ public class AdminController {
 
         List<Integer> portIds = Arrays.stream(request.getParameter("portIds").split(","))
                 .filter(s -> !s.isEmpty()).map(Integer::parseInt).collect(toList());
-        int result = cruiseDao.insertRoute(portIds);
-        System.out.println(result);
-        return "cruises";
+        transactionManager.doInTransaction(connection -> {
+            int routeId = cruiseDao.insertRoute(portIds);
+            cruiseDao.insertCruise(routeId, shipId, startDate,endDate,basePrice);
+        });
+        return "redirect:/cruises";
     }
 
 }

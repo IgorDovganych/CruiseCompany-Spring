@@ -12,6 +12,8 @@ public interface UserDao {
 
     List<User> getAllUsers();
 
+    List<User> getAllUsersOnPage(int pageNum, int pageSize);
+
     User updateUserWithoutPasswordUpdate(int id, String name, String email, String role);
 
     User updateUser(int id, String name, String email, String password, String role);
