@@ -2,7 +2,6 @@ package dao.jdbc;
 
 import dao.CruiseDao;
 import exception.DaoException;
-import model.Port;
 import model.Cruise;
 import model.Ship;
 import org.apache.log4j.Logger;
@@ -54,15 +53,16 @@ public class CruiseDaoJdbc implements CruiseDao {
             "values(?,?,?)";
     final static String GET_MAX_VALUE_OF_ROUTE_ID = "SELECT MAX(route_id) as max_value FROM route_points";
     final static String INSERT_CRUISE = "INSERT INTO cruises(route_id, ship_id,start_date, end_date, base_price, isActive) values(?,?,?,?,?,?)";
-
-
     final static String GET_ALL_SHIPS = "SELECT * FROM ships";
-    final static String GET_ALL_PORTS = "SELECT * FROM ports";
-
     final static String ACTIVATE_CRUISE = "update cruises set isActive =true where id = ?";
     final static String DEACTIVATE_CRUISE = "update cruises set isActive =false where id = ?";
 
-
+    /**
+     * gets all cruises from database
+     * @return   list of cruises
+     * @exception DaoException if a database access error occurs
+     * @throws DaoException  when error inside connection occurs
+     */
     public List<Cruise> getAllCruises() throws DaoException {
         try (Connection connection = connectionPool.getConnection();
              Statement statement = connection.createStatement()) {
@@ -102,46 +102,11 @@ public class CruiseDaoJdbc implements CruiseDao {
         }
     }
 
-
-//    public Cruise getCruiseById(int cruiseId) {
-//        try (Connection connection = connectionPool.getConnection();
-//             PreparedStatement statement = connection.prepareStatement(GET_CRUISE_BY_ID)) {
-//            statement.setInt(1, cruiseId);
-//            ResultSet resultSet = statement.executeQuery();
-//            while (resultSet.next()) {
-//                Ship ship = new Ship(resultSet.getInt("ships.id"),
-//                        resultSet.getInt("ships.capacity"),
-//                        resultSet.getString("ships.model"));
-//                Port port = new Port(resultSet.getInt("ports.id"),
-//                        resultSet.getString("name"));
-//
-//                Date startDate = resultSet.getDate("start_date");
-//                Date endDate = resultSet.getDate("end_date");
-//                int price = resultSet.getInt("base_price");
-//
-//                List<String> route = new ArrayList<>();
-//                String routePoint = resultSet.getString("ports.name");
-//                route.add(routePoint);
-//                while (resultSet.next()) {
-//                    route.add(resultSet.getString("ports.name"));
-//
-//                }
-//                Cruise cruise = new Cruise(cruiseId,
-//                        ship,
-//                        route,
-//                        startDate,
-//                        endDate,
-//                        price);
-//                LOGGER.info(cruise.toString());
-//                return cruise;
-//            }
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
-
+    /**
+     * gets specific cruise from database
+     * @param id - id of the cruise
+     * @return   cruise
+     */
     public Cruise getCruiseById(int id) {
         LOGGER.info("method get cruise by id  started");
         Session session = this.sessionFactory.openSession();
@@ -177,6 +142,11 @@ public class CruiseDaoJdbc implements CruiseDao {
         return cruise;
     }
 
+    /**
+     * puts cruises from database in HashMap
+     * @return   cruise
+     * @throws DaoException  when error inside connection occurs
+     */
     public HashMap<Integer, Cruise> getCruisesByIdsInHashMap() throws DaoException {
         try (Connection connection = connectionPool.getConnection();
              Statement statement = connection.createStatement()) {
@@ -217,6 +187,11 @@ public class CruiseDaoJdbc implements CruiseDao {
         }
     }
 
+    /**
+     * gets all ships from database
+     * @return all ships
+     * @throws DaoException  when error inside connection occurs
+     */
     @Override
     public List<Ship> getAllShips() throws DaoException {
         LOGGER.info("getAllShips method started");
@@ -239,26 +214,12 @@ public class CruiseDaoJdbc implements CruiseDao {
         }
     }
 
-    @Override
-    public List<Port> getAllPorts() throws DaoException {
-        LOGGER.info("getAllPorts method started");
-        try (Connection connection = connectionPool.getConnection();
-             Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(GET_ALL_PORTS);
-            List<Port> ports = new ArrayList<>();
-            while (resultSet.next()) {
-                Port port = new Port(
-                        resultSet.getInt("id"),
-                        resultSet.getString("name"));
-                ports.add(port);
-            }
-            return ports;
-        } catch (SQLException e) {
-            LOGGER.warn(e);
-            throw new DaoException("An exception occurred while getting ports", e);
-        }
-    }
-
+    /**
+     * inserts route into the table inside the database
+     * @param portIds all port id's on the route in sequence order
+     * @return id of the route
+     * @throws DaoException  when error inside connection occurs
+     */
     @Override
     public int insertRoute(List<Integer> portIds) throws DaoException{
         LOGGER.info("insertRoute method started");
@@ -297,6 +258,15 @@ public class CruiseDaoJdbc implements CruiseDao {
         }
     }
 
+    /**
+     * inserts cruise into the table inside the database
+     * @param route_id - id of the route
+     * @param ship_id - ship id
+     * @param startDate - date of start
+     * @param endDate - date of the end
+     * @param basePrice - base ticket price
+     * @throws DaoException  when error inside connection occurs
+     */
     @Override
     public void insertCruise(int route_id, int ship_id, Date startDate, Date endDate, int basePrice) throws DaoException {
         LOGGER.info("insertCruise method started");
@@ -318,6 +288,10 @@ public class CruiseDaoJdbc implements CruiseDao {
         }
     }
 
+    /**
+     * activates cruise
+     * @param cruiseId - id of the cruise
+     */
     @Override
     public void activateCruise(int cruiseId) {
         LOGGER.info("method activateCruise started");
@@ -328,6 +302,10 @@ public class CruiseDaoJdbc implements CruiseDao {
         session.close();
     }
 
+    /**
+     * deactivates cruise so end user cannot see it
+     * @param cruiseId - id of the cruise
+     */
     @Override
     public void deactivateCruise(int cruiseId) {
         LOGGER.info("method deactivateCruise started");

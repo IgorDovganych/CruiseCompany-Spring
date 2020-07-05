@@ -179,7 +179,7 @@ public class AdminController {
         LOGGER.info("CreateCruisePageCommand started");
         List<Ship> ships = cruiseDao.getAllShips();
         request.setAttribute("ships",ships);
-        List<Port> ports = cruiseDao.getAllPorts();
+        List<Port> ports = portDao.getAllPorts();
         request.setAttribute("ports",ports);
         return "create_cruise";
     }

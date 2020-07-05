@@ -26,14 +26,7 @@ public class ExcursionDaoJdbc implements ExcursionDao {
     SessionFactory sessionFactory;
     
     private static final Logger LOGGER = Logger.getLogger(ExcursionDaoJdbc.class);
-    final static String SELECT_EXCURSIONS_BY_PORT_NAME_0 = "SELECT * FROM excursions where port_id = (select id from ports where name='";
-
-    final static String SELECT_EXCURSIONS_BY_PORT_NAME = "SELECT * FROM  ports\n" +
-            "inner join  excursions ON port_id = ports.id\n" +
-            "where ports.name='";
-
     private final static String INSERT_PURCHASED_EXCURSIONS = "insert into purchased_excursions (excursion_id, purchased_ticket_id) values ";
-
     private static final String SELECT_EXCURSIONS_BY_CRUISE_ID =
             "select excursions.id, excursions.name, ports.name, price, description, isActive " +
                     "from excursions inner join ports " +
@@ -42,9 +35,13 @@ public class ExcursionDaoJdbc implements ExcursionDao {
     private static final String SELECT_ALL_EXCURSIONS_IN_ALL_PORTS = "SELECT * FROM ports\n" +
             "left join excursions on ports.id=excursions.port_id";
     private static final String DEACTIVATE_EXCURSION_BY_ID = "update excursions set isActive=0 where id=?";
-
     private static final String ACTIVATE_EXCURSION_BY_ID = "update excursions set isActive=1 where id=?";
 
+    /**
+     * gets all excursions from database
+     * @return list of excursions
+     * @throws DaoException  when error inside connection occurs
+     */
     @Override
     public List<ExcursionsInPortContainer> getAllExcursionsInAllPorts() throws DaoException {
         try (Connection connection = connectionPool.getConnection();
@@ -90,6 +87,12 @@ public class ExcursionDaoJdbc implements ExcursionDao {
         }
     }
 
+    /**
+     * gets all excursions from database
+     * @param cruiseId - id of the cruise
+     * @return list of excursions which are available in cruise
+     * @throws DaoException  when error inside connection occurs
+     */
     @Override
     public List<Excursion> getExcursionsByCruiseId(int cruiseId) throws DaoException {
 
@@ -115,6 +118,13 @@ public class ExcursionDaoJdbc implements ExcursionDao {
         }
     }
 
+    /**
+     * creates new record in purchased excursions table in database
+     * @param connection - connection from Connection Pool
+     * @param excursionIds - id of excuirsions which has been purchased by user
+     * @param purchasedTicketId - id of the ticket
+     * @throws DaoException  when error inside connection occurs
+     */
     @Override
     public void purchaseExcursions(Connection connection, List<Integer> excursionIds, int purchasedTicketId) throws DaoException {
         if (excursionIds.isEmpty()) {
@@ -130,6 +140,11 @@ public class ExcursionDaoJdbc implements ExcursionDao {
         }
     }
 
+    /**
+     * deactivates excursion
+     * @param excursionId - id of the excursion
+     * @throws DaoException  when error inside connection occurs
+     */
     @Override
     public void deactivateExcursion(int excursionId) throws DaoException {
         try (Connection connection = connectionPool.getConnection();
@@ -144,6 +159,11 @@ public class ExcursionDaoJdbc implements ExcursionDao {
         }
     }
 
+    /**
+     * activates excursion
+     * @param excursionId - id of the excursion
+     * @throws DaoException  when error inside connection occurs
+     */
     @Override
     public void activateExcursion(int excursionId) throws DaoException {
         try (Connection connection = connectionPool.getConnection();
@@ -158,6 +178,14 @@ public class ExcursionDaoJdbc implements ExcursionDao {
         }
     }
 
+    /**
+     * inserts new excursion into the database
+     * @param name - excursion name
+     * @param description - some details of excursion
+     * @param portId - id of the port where excursion takes place
+     * @param price - excursion price
+     * @throws DaoException  when error inside connection occurs
+     */
     @Override
     public void createExcursion(String name, int portId, String description, int price) {
         LOGGER.info("method create excursion started");

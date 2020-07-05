@@ -8,11 +8,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -32,6 +27,11 @@ public class UserDaoJdbc implements UserDao {
     private static final String UPDATE_USER = "update users set name=(?),email=(?),role=(?),password=(?) where id=";
     private static final String UPDATE_USER_WITHOUT_PASSWORD_UPDATE = "update users set name=?,email=?,role=? where id=";
 
+    /**
+     * gets a user searching by email from database
+     * @param email - email
+     * @return user
+     */
     @Override
     public User findUserByEmail(String email) {
         LOGGER.info("method find user by email started");
@@ -41,6 +41,11 @@ public class UserDaoJdbc implements UserDao {
         return user;
     }
 
+    /**
+     * gets user by id from database
+     * @param id - user id
+     * @return user
+     */
     @Override
     public User getUserById(long id) {
         LOGGER.info("method find user by id started");
@@ -50,6 +55,13 @@ public class UserDaoJdbc implements UserDao {
         return user;
     }
 
+    /**
+     * inserts new user into the database
+     * @param email - user email
+     * @param name - name of the user
+     * @param password - hashed password
+     * @return user
+     */
     @Override
     public User createUser(String name, String email, String password) {
         LOGGER.info("method createUser started");
@@ -60,6 +72,10 @@ public class UserDaoJdbc implements UserDao {
         return user;
     }
 
+    /**
+     * gets all users from database
+     * @return list of users
+     */
     @Override
     public List<User> getAllUsers() {
         LOGGER.info("method getAllUsers started");
@@ -71,6 +87,12 @@ public class UserDaoJdbc implements UserDao {
         return users;
     }
 
+    /**
+     * gets certain amount of users
+     * @param pageNum - number of the page
+     * @param pageSize - quantity of users per page
+     * @return list of users the page
+     */
     @Override
     public List<User> getAllUsersOnPage(int pageNum, int pageSize) {
         LOGGER.info("method getAllUsers on page " + pageNum + " started");
@@ -84,6 +106,15 @@ public class UserDaoJdbc implements UserDao {
         return users;
     }
 
+    /**
+     * updates user and stores in database with password update
+     * @param id - user id
+     * @param name - user name
+     * @param email - user email
+     * @param password - hashed password
+     * @param role - user role
+     * @return updated user
+     */
     @Override
     public User updateUser(int id, String name, String email, String password, String role) {
         LOGGER.info("method updateUser started");
@@ -102,6 +133,14 @@ public class UserDaoJdbc implements UserDao {
         return user;
     }
 
+    /**
+     * updates user and stores in database without updating a password
+     * @param id - user id
+     * @param name - user name
+     * @param email - user email
+     * @param role - user role
+     * @return updated user
+     */
     @Override
     public User updateUserWithoutPasswordUpdate(int id, String name, String email, String role) {
         return updateUser(id, name, email, null, role);

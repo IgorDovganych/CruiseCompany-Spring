@@ -19,9 +19,13 @@ public class PortDaoJdbc implements PortDao {
 
     private static final String GET_ALL_PORTS = "Select * from ports";
 
+    /**
+     * gets all ports from database
+     * @return list of ports
+     */
     @Override
     public List<Port> getAllPorts() {
-        Session session = this.sessionFactory.openSession();
+        Session session = sessionFactory.openSession();
         SQLQuery query = session.createSQLQuery(GET_ALL_PORTS);
         query.addEntity(Port.class);
         List<Port> ports = query.list();
