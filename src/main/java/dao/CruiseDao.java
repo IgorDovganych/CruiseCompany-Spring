@@ -23,4 +23,6 @@ public interface CruiseDao {
     List<Port> getAllPorts() throws DaoException;
     int insertRoute(List<Integer> portIds) throws DaoException;
     void insertCruise(int route_id, int ship_id, Date startDate, Date endDate, int basePrice) throws DaoException;
+    void activateCruise(int cruiseId);
+    void deactivateCruise(int cruiseId);
 }

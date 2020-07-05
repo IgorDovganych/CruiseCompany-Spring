@@ -55,7 +55,7 @@ public class AdminController {
             pageNum = Integer.parseInt(request.getParameter("page"));
         }
 
-        int pageSize = 10;
+        int pageSize = 5;
         int numOfUsers = userDao.getAllUsers().size();
         int numOfPages = numOfUsers/pageSize;
         List<User> users = userDao.getAllUsersOnPage(pageNum,pageSize);
@@ -206,4 +206,17 @@ public class AdminController {
         return "redirect:/cruises";
     }
 
+    @RequestMapping(value = "/admin/activate_cruise",method = RequestMethod.GET)
+    public String activateCruise(HttpServletRequest request){
+        int cruiseId = Integer.parseInt(request.getParameter("id"));
+        cruiseDao.activateCruise(cruiseId);
+        return "redirect:/cruises";
+    }
+
+    @RequestMapping(value = "/admin/deactivate_cruise",method = RequestMethod.GET)
+    public String deactivateCruise(HttpServletRequest request){
+        int cruiseId = Integer.parseInt(request.getParameter("id"));
+        cruiseDao.deactivateCruise(cruiseId);
+        return "redirect:/cruises";
+    }
 }

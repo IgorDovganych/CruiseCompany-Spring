@@ -41,6 +41,8 @@ public class Cruise {
     @Column(name = "base_price")
     int price;
 
+    @Column(name = "isActive")
+    boolean isActive;
 
     public Cruise() {
     }
@@ -54,6 +56,19 @@ public class Cruise {
         this.price = price;
     }
 
+    public Cruise(int id, Ship ship, List<String> route, Date start_date, Date endDate, int price, boolean isActive) {
+        this.id = id;
+        this.ship = ship;
+        this.route = route;
+        this.startDate = start_date;
+        this.endDate = endDate;
+        this.price = price;
+        this.isActive = isActive;
+    }
+
+    public boolean getIsActive() {
+        return isActive;
+    }
 
     public int getPrice() {
         return price;
@@ -109,6 +124,7 @@ public class Cruise {
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", price=" + price +
+                ", isActive=" + isActive +
                 '}';
     }
 }

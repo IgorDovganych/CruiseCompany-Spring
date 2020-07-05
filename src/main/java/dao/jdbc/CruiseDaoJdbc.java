@@ -45,7 +45,7 @@ public class CruiseDaoJdbc implements CruiseDao {
             "inner join ports on route_points.port_id=ports.id " +
             "where cruises.id=? order by ships.id, port_sequence_number asc";
 
-    final static String HQL_GET_CRUISE_BY_ID = "SELECT cruises.id, ship_id, ships.model as model, capacity, ports.name, start_date, end_date, base_price,port_sequence_number FROM cruises inner join ships as ships on ship_id=ships.id" +
+    final static String HQL_GET_CRUISE_BY_ID = "SELECT cruises.id, ship_id, ships.model as model, capacity, ports.name, start_date, end_date, base_price, isActive, port_sequence_number FROM cruises inner join ships as ships on ship_id=ships.id" +
             " inner join route_points on cruises.route_id=route_points.route_id " +
             " inner join ports on route_points.port_id=ports.id " +
             " where cruises.id=? order by ships.id, port_sequence_number asc";
@@ -53,11 +53,15 @@ public class CruiseDaoJdbc implements CruiseDao {
     final static String INSERT_INTO_ROUTE_POINTS ="INSERT INTO route_points(route_id, port_id,port_sequence_number) " +
             "values(?,?,?)";
     final static String GET_MAX_VALUE_OF_ROUTE_ID = "SELECT MAX(route_id) as max_value FROM route_points";
-    final static String INSERT_CRUISE = "INSERT INTO cruises(route_id, ship_id,start_date, end_date, base_price) values(?,?,?,?,?)";
+    final static String INSERT_CRUISE = "INSERT INTO cruises(route_id, ship_id,start_date, end_date, base_price, isActive) values(?,?,?,?,?,?)";
 
 
     final static String GET_ALL_SHIPS = "SELECT * FROM ships";
     final static String GET_ALL_PORTS = "SELECT * FROM ports";
+
+    final static String ACTIVATE_CRUISE = "update cruises set isActive =true where id = ?";
+    final static String DEACTIVATE_CRUISE = "update cruises set isActive =false where id = ?";
+
 
     public List<Cruise> getAllCruises() throws DaoException {
         try (Connection connection = connectionPool.getConnection();
@@ -86,9 +90,11 @@ public class CruiseDaoJdbc implements CruiseDao {
                         route,
                         resultSet.getDate("start_date"),
                         resultSet.getDate("end_date"),
-                        resultSet.getInt("base_price"));
+                        resultSet.getInt("base_price"),
+                        resultSet.getBoolean("isActive"));
                 cruises.add(cruise);
             }
+            LOGGER.info("all cruises : "  + cruises.toString());
             return cruises;
         } catch (SQLException e) {
             LOGGER.warn(e);
@@ -149,12 +155,15 @@ public class CruiseDaoJdbc implements CruiseDao {
         Date start_date = null;
         Date end_date = null;
         int basePrice = 0;
+        boolean isActive = false;
         for (Object object : data) {
             Map row = (Map) object;
             cruiseId = (Integer) (row.get("id"));
             start_date = (Date) row.get("start_date");
             end_date = (Date) row.get("end_date");
             basePrice = (Integer) row.get("base_price");
+            byte active = (Byte) row.get("isActive");
+            isActive = active!=0;
             String model = (String) row.get("model");
             ship.setId((Integer) row.get("ship_id"));
             ship.setModel(model);
@@ -162,7 +171,7 @@ public class CruiseDaoJdbc implements CruiseDao {
             ship.setCapacity(capacity);
             ports.add((String) row.get("name"));
         }
-        Cruise cruise = new Cruise(cruiseId, ship, ports, start_date, end_date, basePrice);
+        Cruise cruise = new Cruise(cruiseId, ship, ports, start_date, end_date, basePrice, isActive);
         LOGGER.info("get cruise by id returns : " + cruise.toString());
         session.close();
         return cruise;
@@ -196,7 +205,8 @@ public class CruiseDaoJdbc implements CruiseDao {
                         route,
                         resultSet.getDate("start_date"),
                         resultSet.getDate("end_date"),
-                        resultSet.getInt("base_price"));
+                        resultSet.getInt("base_price"),
+                        resultSet.getBoolean("isActive"));
 
                 cruises.put(cruiseId, cruise);
             }
@@ -299,11 +309,32 @@ public class CruiseDaoJdbc implements CruiseDao {
             java.sql.Date sqlEndDate = new java.sql.Date(endDate.getTime());
             ps.setDate(4, sqlEndDate);
             ps.setInt(5,basePrice);
+            ps.setBoolean(6,true);
             ps.executeUpdate();
 
         }catch(SQLException e){
             LOGGER.warn(e);
             throw new DaoException("An exception while inserting cruise into cruise table");
         }
+    }
+
+    @Override
+    public void activateCruise(int cruiseId) {
+        LOGGER.info("method activateCruise started");
+        Session session = sessionFactory.openSession();
+        SQLQuery sql = session.createSQLQuery(ACTIVATE_CRUISE);
+        sql.setInteger(0, cruiseId);
+        sql.executeUpdate();
+        session.close();
+    }
+
+    @Override
+    public void deactivateCruise(int cruiseId) {
+        LOGGER.info("method deactivateCruise started");
+        Session session = sessionFactory.openSession();
+        SQLQuery sql = session.createSQLQuery(DEACTIVATE_CRUISE);
+        sql.setInteger(0, cruiseId);
+        sql.executeUpdate();
+        session.close();
     }
 }
