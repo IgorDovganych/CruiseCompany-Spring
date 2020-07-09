@@ -13,24 +13,24 @@ Original task :
 косметические салоны...). 
 
 Installation
-git clone https://github.com/IgorDovganych/CruiseCompany-Spring.git
+- git clone https://github.com/IgorDovganych/CruiseCompany-Spring.git
 
 You need to have: 
 
-MySQL 8 
-Java 8 or higher
-Maven - to manage project's build
+- MySQL 8 
+- Java 8 or higher
+- Maven - to manage project's build
 
 Configuration: 
-From the folder SQL run all scripts to create tables and fill database with the data  
+- From the folder SQL run all scripts to create tables and fill database with the data  
 
 Run: 
 
-from command line go to the project folder and execute the following command "mvn tomcat7:run"
-from browser open http://localhost:8080/FinalProjectJavaEE/
-Credentials to login : 
-Admin:  email - admin@gmail.com, password - 12345
-User: email - user@gmail.com, password - 12345
+- from command line go to the project folder and execute the following command "mvn tomcat7:run"
+- from browser open http://localhost:8080/FinalProjectJavaEE/
+- Credentials to login : 
+- Admin:  email - admin@gmail.com, password - 12345
+- User: email - user@gmail.com, password - 12345
 
 What you can do depends on your role : 
 User: 
