@@ -123,7 +123,7 @@
                     <c:when test="${availableTicketsAmount >0}">
                         <p class="center">
                             <button class='w3-button w3-green w3-tiny w3-round'
-                                    onclick="sendRequest('/FinalProjectSpring/purchase_ticket', method='post')">
+                                    onclick="sendRequest('/CruiseCompany/purchase_ticket', method='post')">
                                 <fmt:message key="purchase"/>
                             </button>
                         </p>

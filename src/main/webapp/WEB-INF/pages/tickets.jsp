@@ -37,7 +37,7 @@
                             <td>
                                 <c:choose>
                                     <c:when test="${bonus!=null}">
-                                        <a href='/FinalProjectSpring/admin/delete_bonus?bonusName=${bonus}'>
+                                        <a href='/CruiseCompany/admin/delete_bonus?bonusName=${bonus}'>
                                             <button class="dropbtn"><fmt:message key="delete"/></button>
                                         </a>
                                     </c:when>
@@ -52,7 +52,7 @@
                 </table>
             </td>
             <td>
-                <form action="/FinalProjectSpring/admin/add_bonus" method="post">
+                <form action="/CruiseCompany/admin/add_bonus" method="post">
                     <input type="hidden" name="ticketTypeId" value="${ticketType.id}">
                     <input type="submit" class="dropbtn" value="<fmt:message key="add"/>">
                     <input type="text" name="bonusName" value="Type bonus name.." pattern="[а-яА-ЯёЁіІїЇa-A-Za-z-Z0-9]{3,40}" required title="3-40 letters">

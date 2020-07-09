@@ -10,7 +10,7 @@
     http://www.springframework.org/schema/jee/spring-jee.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
 
-    <context:component-scan base-package="commands, dao, dao.jdbc, filter, manager, model, servlet"/>
+    <context:component-scan base-package="dao, dao.jdbc, filter, manager, model, servlet"/>
 
 
 

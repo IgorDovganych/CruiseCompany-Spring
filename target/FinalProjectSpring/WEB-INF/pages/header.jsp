@@ -13,47 +13,47 @@
 <div class="header menu">
     <div class="left-float ">
         <div class="left-float">
-            <a href="/FinalProjectSpring" class="margin-right"><img class="main-img" src="<c:url value="/assets/images/cruise_logo.jpg"/>"></a>
+            <a href="/CruiseCompany" class="margin-right"><img class="main-img" src="<c:url value="/assets/images/cruise_logo.jpg"/>"></a>
         </div>
         <c:if test="${user.role=='admin'}">
             <div class="left-float margin-top">
-                    <a href="/FinalProjectSpring/admin/users" class="margin-right"><fmt:message key="users"/></a>
+                    <a href="/CruiseCompany/admin/users" class="margin-right"><fmt:message key="users"/></a>
             </div>
             <div class="left-float margin-top">
-                <a href="/FinalProjectSpring/admin/tickets" class="margin-right"><fmt:message key="tickets"/></a>
+                <a href="/CruiseCompany/admin/tickets" class="margin-right"><fmt:message key="tickets"/></a>
             </div>
             <div class="left-float margin-top">
-                <a href="/FinalProjectSpring/admin/excursions" class="margin-right"><fmt:message key="excursions"/></a>
+                <a href="/CruiseCompany/admin/excursions" class="margin-right"><fmt:message key="excursions"/></a>
             </div>
         </c:if>
         <div class="left-float margin-top">
-            <a href="/FinalProjectSpring/cruises" class="margin-right"><fmt:message key="cruises"/></a>
+            <a href="/CruiseCompany/cruises" class="margin-right"><fmt:message key="cruises"/></a>
         </div>
     </div>
     <div class="right-float margin-top" style=" margin-right: 10% ">
 
         <c:choose>
             <c:when test="${user == null}">
-                <a href="/FinalProjectSpring/login_page" class="margin-right"> <fmt:message key="login"/></a>
+                <a href="/CruiseCompany/login_page" class="margin-right"> <fmt:message key="login"/></a>
             </c:when>
             <c:otherwise>
-                <a href="/FinalProjectSpring/user_account_info" class="margin-right">${sessionScope.user.email}</a>
+                <a href="/CruiseCompany/user_account_info" class="margin-right">${sessionScope.user.email}</a>
             </c:otherwise>
         </c:choose>
         <c:choose>
             <c:when test="${user == null}">
-                <a href="/FinalProjectSpring/registration_page" class="margin-right"> <fmt:message key="register"/></a>
+                <a href="/CruiseCompany/registration_page" class="margin-right"> <fmt:message key="register"/></a>
             </c:when>
             <c:otherwise>
-                <a href="/FinalProjectSpring/logout" class="margin-right"><fmt:message key="logout"/> </a>
+                <a href="/CruiseCompany/logout" class="margin-right"><fmt:message key="logout"/> </a>
             </c:otherwise>
         </c:choose>
         <div class="dropdown">
             <button class="dropbtn"><fmt:message key="language"/></button>
             <div class="dropdown-content">
-                <a href="/FinalProjectSpring/change_language?lang=en&link=${requestScope['javax.servlet.forward.request_uri']}&parameters=${pageContext.request.queryString}">English</a>
-                <a href="/FinalProjectSpring/change_language?lang=ukr&link=${requestScope['javax.servlet.forward.request_uri']}&parameters=${pageContext.request.queryString}">Українська</a>
-                <a href="/FinalProjectSpring/change_language?lang=ru&link=${requestScope['javax.servlet.forward.request_uri']}&parameters=${pageContext.request.queryString}">Русский</a>
+                <a href="/CruiseCompany/change_language?lang=en&link=${requestScope['javax.servlet.forward.request_uri']}&parameters=${pageContext.request.queryString}">English</a>
+                <a href="/CruiseCompany/change_language?lang=ukr&link=${requestScope['javax.servlet.forward.request_uri']}&parameters=${pageContext.request.queryString}">Українська</a>
+                <a href="/CruiseCompany/change_language?lang=ru&link=${requestScope['javax.servlet.forward.request_uri']}&parameters=${pageContext.request.queryString}">Русский</a>
             </div>
         </div>
     </div>

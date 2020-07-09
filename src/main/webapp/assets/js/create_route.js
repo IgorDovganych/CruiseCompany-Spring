@@ -7,11 +7,9 @@ function addPortToRoute(id) {
 
     var element = document.createElement("tr");
     var pointId = document.getElementById("route").children.length +1;
-    element.innerHTML = "<td>"+pointId+"</td><td hidden>" +id + "</td><td>"+ portName + "</td><td><button onclick='removePortFromRoute(" + pointId + ")'>-</button></td>";
+    element.innerHTML = "<td hidden>"+pointId+"</td><td hidden>" +id + "</td><td>"+ portName + "</td><td><button onclick='removePortFromRoute(" + pointId + ")'>-</button></td>";
 
     tableWithRoute.appendChild(element);
-
-
 }
 
 function removePortFromRoute(pointId) {

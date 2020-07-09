@@ -12,7 +12,7 @@
 </head>
 <body>
 <jsp:include page="header.jsp"></jsp:include>
-<form action="/FinalProjectSpring/registration" method="post">
+<form action="/CruiseCompany/registration" method="post">
     <table>
         <tr><td><fmt:message key="name"/>:</td><td><input name="name" pattern="[а-яА-ЯёЁіІїЇa-A-Za-z-Z0-9]{3,40}" required/></td></tr>
         <tr><td><fmt:message key="email"/>:</td><td><input type="text" name="email" pattern="^[-\w.]+@([A-z0-9][-A-z0-9]+\.)+[A-z]{2,4}$" required /></td></tr>

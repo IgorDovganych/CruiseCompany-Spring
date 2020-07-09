@@ -1,0 +1,4 @@
+
+
+INSERT INTO ports(id, name) values('4', 'Aarhus');
+INSERT INTO ports(id, name) values('5', 'Odense');

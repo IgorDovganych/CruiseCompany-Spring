@@ -1,0 +1,2 @@
+insert into ships(id, capacity, model) values ('4','50','BEE');
+insert into ships(id, capacity, model) values ('5','100','Hawaii');

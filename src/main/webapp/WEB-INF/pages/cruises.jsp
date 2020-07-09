@@ -14,7 +14,7 @@
 <jsp:include page="header.jsp"></jsp:include>
 <c:if test="${user.role=='admin'}">
     <div class="center">
-        <a href="/FinalProjectSpring/admin/create_cruise_page" class="margin-right"><fmt:message key="createCruise"/></a>
+        <a href="/CruiseCompany/admin/create_cruise_page" class="margin-right"><fmt:message key="createCruise"/></a>
     </div>
     <br>
 </c:if>
@@ -40,7 +40,7 @@
                     <td>${cruise.startDate}</td>
                     <td>${cruise.endDate}</td>
                     <td>${cruise.price} $</td>
-                    <td><a href='/FinalProjectSpring/cruise_info?id=${cruise.id}'>
+                    <td><a href='/CruiseCompany/cruise_info?id=${cruise.id}'>
                         <button class='w3-button w3-green w3-tiny w3-round'>
                             <fmt:message key="open"/>
                         </button>
@@ -49,15 +49,14 @@
                     <td>
                         <c:choose>
                             <c:when test="${cruise.isActive==true}">
-                                <a href='/FinalProjectSpring/admin/deactivate_cruise?id=${cruise.id}'>
+                                <a href='/CruiseCompany/admin/deactivate_cruise?id=${cruise.id}'>
                                     <button class='w3-button w3-green w3-tiny w3-round'>
                                         <fmt:message key="deactivate"/>
                                     </button>
                                 </a>
-
                             </c:when>
                             <c:otherwise>
-                                <a href='/FinalProjectSpring/admin/activate_cruise?id=${cruise.id}'>
+                                <a href='/CruiseCompany/admin/activate_cruise?id=${cruise.id}'>
                                     <button class='w3-button w3-green w3-tiny w3-round'>
                                         <fmt:message key="activate"/>
                                     </button>
@@ -78,7 +77,7 @@
                             <td>${cruise.startDate}</td>
                             <td>${cruise.endDate}</td>
                             <td>${cruise.price} $</td>
-                            <td><a href='/FinalProjectSpring/cruise_info?id=${cruise.id}'>
+                            <td><a href='/CruiseCompany/cruise_info?id=${cruise.id}'>
                                 <button class='w3-button w3-green w3-tiny w3-round'>
                                     <fmt:message key="open"/>
                                 </button>
@@ -100,7 +99,7 @@
 <%--                    <td>${cruise.startDate}</td>--%>
 <%--                    <td>${cruise.endDate}</td>--%>
 <%--                    <td>${cruise.price} $</td>--%>
-<%--                    <td><a href='/FinalProjectSpring/cruise_info?id=${cruise.id}'>--%>
+<%--                    <td><a href='/CruiseCompany/cruise_info?id=${cruise.id}'>--%>
 <%--                        <button class='w3-button w3-green w3-tiny w3-round'>--%>
 <%--                            <fmt:message key="open"/>--%>
 <%--                        </button>--%>

@@ -25,9 +25,9 @@
     <br>
     <fmt:message key="addPortsToRoute"/>
 </p>
-<div style="background: green; margin-left: 550px" class="center">
+<div style="margin-left: 550px" class="center">
 
-    <div style="background: antiquewhite" class="left-float">
+    <div class="left-float">
 
         <table >
             <thead>
@@ -48,7 +48,7 @@
         </table>
     </div>
 
-    <div style="background: brown" class="left-float">
+    <div style="background: grey" class="left-float">
         <table id="route"></table>
     </div>
     <br>
@@ -61,7 +61,7 @@
     <br>
 </div>
 
-<div style="background: aliceblue" class="center">
+<div class="center">
     <p class="center">
         <label for="start">Start date:</label>
 
@@ -85,7 +85,7 @@
     <br>
     <fmt:message key="value"/>: <span id="demo"></span> $
     <br>
-    <button onclick="sendRequest('/FinalProjectSpring/admin/create_cruise', method='post')">
+    <button onclick="sendRequest('/CruiseCompany/admin/create_cruise', method='post')">
         <fmt:message key="createCruise"/>
     </button>
 </div>

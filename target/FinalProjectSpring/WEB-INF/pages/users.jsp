@@ -28,7 +28,7 @@
                 <td>${user.email}</td>
                 <td>${user.role}</td>
                 <td>
-                    <a href='/FinalProjectSpring/admin/update_user_page?id=${user.id}'>
+                    <a href='/CruiseCompany/admin/update_user_page?id=${user.id}'>
                         <button class='w3-button w3-green w3-tiny w3-round'>
                             <fmt:message key="update"/>
                         </button>
@@ -42,7 +42,7 @@
             <fmt:message key="currentPage"/> : ${page} |
             <fmt:message key="users"/> : ${numOfUsers} |
             <c:forEach var="page" begin="1" end="${numOfPages}">
-                 <a href="/FinalProjectSpring/admin/users?page=${page}">${page}</a>
+                 <a href="/CruiseCompany/admin/users?page=${page}">${page}</a>
             </c:forEach>
         </td>
     </tr>

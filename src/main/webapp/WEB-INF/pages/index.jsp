@@ -15,7 +15,7 @@
     <body>
         <jsp:include page="header.jsp"></jsp:include>
         <div class="center">
-            <a href="/FinalProjectSpring"><img class="image-map" src="<c:url value="/assets/images/map.jpg"/>"></a>
+            <a href="/CruiseCompany"><img class="image-map" src="<c:url value="/assets/images/map.jpg"/>"></a>
         </div>
     </body>
 </html>

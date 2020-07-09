@@ -1,0 +1,33 @@
+	CREATE TABLE IF NOT EXISTS cruises(
+		id INT NOT NULL PRIMARY KEY,
+		route_id INT NOT NULL,
+		ship_id INT NOT NULL,
+		start_date Date,
+		end_date Date,
+		base_price INT NOT NULL,
+		
+		CONSTRAINT ship_id
+		FOREIGN KEY (ship_id)
+		REFERENCES ships (id),
+		
+		CONSTRAINT route_id
+		FOREIGN KEY (route_id)
+		REFERENCES route_points (route_id)
+	);
+	
+	
+	INSERT INTO cruises(id, route_id, ship_id, start_date, end_date,base_price)
+	values('1','1','1','2020-06-16','2020-06-18', '150');
+	
+	INSERT INTO cruises(id, route_id, ship_id, start_date, end_date,base_price)
+	values('2','2','2','2020-06-20','2020-06-21','70');
+	
+	INSERT INTO cruises(id, route_id, ship_id, start_date, end_date,base_price)
+	values('3','3','3','2020-06-25','2020-06-25','50');
+	
+	
+	
+	SELECT model,cruises.route_id, port_sequence_number,ports.name,start_date,end_date FROM cruises
+inner join ships on ship_id=ships.id
+inner join route_points on cruises.route_id=route_points.route_id 
+inner join ports on route_points.port_id=ports.id;

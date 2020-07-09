@@ -1,0 +1,28 @@
+	CREATE TABLE IF NOT EXISTS route_points(
+		route_id INT NOT NULL,
+		port_id INT NOT NULL,
+		port_sequence_number INT NOT NULL,
+		CONSTRAINT port_id
+		FOREIGN KEY (port_id)
+		REFERENCES ports (id)
+	)
+	
+	CREATE INDEX index_route_id
+	ON route_points (route_id);
+	
+	CREATE SEQUENCE SEQ_USER START WITH 5 INCREMENT BY 5;
+	INSERT INTO USER_TABLE VALUES (SEQ_USER.NEXTVAL, 'Washington', 'George');
+	INSERT INTO USER_TABLE VALUES (SEQ_USER.NEXTVAL, 'Jefferson', 'Thomas');
+
+
+
+	INSERT INTO route_points(route_id, port_id,port_sequence_number) values('1','1','1');
+	INSERT INTO route_points(route_id, port_id,port_sequence_number) values('1','2','2');
+	INSERT INTO route_points(route_id, port_id,port_sequence_number) values('1','3','3');
+	
+	INSERT INTO route_points(route_id, port_id,port_sequence_number) values('2','3','1');
+	INSERT INTO route_points(route_id, port_id,port_sequence_number) values('2','2','2');
+	
+	INSERT INTO route_points(route_id, port_id,port_sequence_number) values('3','4','1');
+	INSERT INTO route_points(route_id, port_id,port_sequence_number) values('3','5','2');
+	

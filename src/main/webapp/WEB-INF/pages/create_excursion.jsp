@@ -13,7 +13,7 @@
 </head>
 <body>
 <jsp:include page="header.jsp"></jsp:include>
-<form action="/FinalProjectSpring/admin/create_excursion" method="post">
+<form action="/CruiseCompany/admin/create_excursion" method="post">
 <p class="center">
     <div class="center">
     <c:if test="${error_message!=null}">

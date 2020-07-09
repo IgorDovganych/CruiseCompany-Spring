@@ -12,7 +12,7 @@
 </head>
 <body>
 <jsp:include page="header.jsp"></jsp:include>
-<form action="/FinalProjectSpring/login" method="post">
+<form action="/CruiseCompany/login" method="post">
     <table class="login-form center">
         <tr><td><fmt:message key="email"/>:</td><td><input type="text" name="email" pattern="^[-\w.]+@([A-z0-9][-A-z0-9]+\.)+[A-z]{2,4}$" required
                                       value="${email}"/></td></tr>

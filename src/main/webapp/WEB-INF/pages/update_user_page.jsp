@@ -17,7 +17,7 @@
 <h1><fmt:message key="updateUser"/></h1>
 
 
-<form method="post" action="/FinalProjectSpring/admin/update_user">
+<form method="post" action="/CruiseCompany/admin/update_user">
 
     <input type="hidden" name="id" value="${user.id}">
     <br>

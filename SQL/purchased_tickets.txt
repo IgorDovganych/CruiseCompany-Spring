@@ -1,0 +1,18 @@
+	CREATE TABLE IF NOT EXISTS purchased_tickets(
+		id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+		user_id INT NOT NULL ,
+		cruise_id INT NOT NULL ,
+		ticket_id INT NOT NULL, 
+        
+		CONSTRAINT user_id
+		FOREIGN KEY (user_id)
+		REFERENCES users (id),
+		
+		CONSTRAINT cruise_id
+		FOREIGN KEY (cruise_id)
+		REFERENCES cruises (id),
+        
+        CONSTRAINT ticket_id
+		FOREIGN KEY (ticket_id)
+		REFERENCES tickets (id)
+	);

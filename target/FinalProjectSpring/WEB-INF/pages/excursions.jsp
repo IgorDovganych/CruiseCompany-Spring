@@ -14,7 +14,7 @@
 <jsp:include page="header.jsp"></jsp:include>
 <c:if test="${user.role=='admin'}">
     <div class="center">
-        <a href="/FinalProjectSpring/admin/create_excursion_page" class="margin-right"><fmt:message key="createExcursion"/></a>
+        <a href="/CruiseCompany/admin/create_excursion_page" class="margin-right"><fmt:message key="createExcursion"/></a>
     </div>
     <br>
 </c:if>
@@ -46,12 +46,12 @@
                                     <c:when test="${excursion.name!=null}">
                                         <c:choose>
                                             <c:when test="${excursion.isActive==true}">
-                                                <a href='/FinalProjectSpring/admin/deactivate_excursion?excursionId=${excursion.id}'>
+                                                <a href='/CruiseCompany/admin/deactivate_excursion?excursionId=${excursion.id}'>
                                                     <button class="dropbtn"><fmt:message key="deactivate"/></button>
                                                 </a>
                                             </c:when>
                                             <c:otherwise>
-                                                <a href='/FinalProjectSpring/admin/activate_excursion?excursionId=${excursion.id}'>
+                                                <a href='/CruiseCompany/admin/activate_excursion?excursionId=${excursion.id}'>
                                                     <button class="dropbtn"><fmt:message key="activate"/></button>
                                                 </a>
                                             </c:otherwise>

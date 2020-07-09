@@ -1,0 +1,21 @@
+	CREATE TABLE IF NOT EXISTS excursions(
+		id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+		name VARCHAR(45) NOT NULL,
+		port_id INT NOT NULL,
+		price INT NOT NULL,
+		description TEXT,
+		isActive BOOLEAN,
+		
+		CONSTRAINT port_id_excursions
+		FOREIGN KEY (port_id)
+		REFERENCES ports(id)
+	);
+		INSERT INTO excursions(id, name, port_id, price, description)
+			values('1','Vigeland Park','1','10','You will see wonderful sculptures');
+			
+		INSERT INTO excursions(id, name, port_id, price, description)
+			values('2','Bla Planet','3','8','Northern Europe’s largest aquarium, home to thousands of animals and 7 million litres of water.');
+        
+		INSERT INTO excursions(id, name, port_id, price, description)
+			values('3','Opera','1','8','Biggest opera in the whole country', '1');
+            
